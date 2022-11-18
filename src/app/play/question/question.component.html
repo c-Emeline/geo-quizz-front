@@ -1,0 +1,21 @@
+<div class="container text-center">
+    <div class="align-items-center">{{flag}}</div>
+    <div class="align-items-center">{{country}}</div>
+
+    <div *ngIf="qcm; else elseBlock" >
+        <input type="text" class="form-control" placeholder="Capitale de ce pays" aria-label="Capitale de ce pays" aria-describedby="button-addon2">
+    </div>
+
+    <ng-template #elseBlock>
+        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale1</button>
+        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale2</button>
+        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale3</button>
+        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale4</button>
+    </ng-template>
+
+    <button class="btn btn-success me-2" type="button" id="button-addon2">Valider</button>
+    <button class="btn btn-danger me-2" type="button" id="button-addon2">Passer</button>
+    <div>Question {{currentQuestion.questionNb}} - {{nbOfQuestion}}</div>
+
+
+</div>

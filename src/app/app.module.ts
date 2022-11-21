@@ -8,6 +8,7 @@ import { HomeComponent } from './home-page/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { QuestionComponent } from './play/question/question.component';
 import { PlayInterfaceComponent } from './play/play-interface/play-interface.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PlayInterfaceComponent } from './play/play-interface/play-interface.com
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

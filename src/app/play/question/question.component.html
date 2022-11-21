@@ -1,21 +1,37 @@
 <div class="container text-center">
-    <div class="align-items-center">{{flag}}</div>
-    <div class="align-items-center">{{country}}</div>
+    <img
+    src="https://countryflagsapi.com/svg/{{currentQuestion.id}}"
+    height="160"
+    alt="{{currentQuestion.country}}"
+    class="img mt-5">
+    <div class="align-items-center fs-1">{{currentQuestion.country}}</div>
 
     <div *ngIf="qcm; else elseBlock" >
         <input type="text" class="form-control" placeholder="Capitale de ce pays" aria-label="Capitale de ce pays" aria-describedby="button-addon2">
     </div>
 
     <ng-template #elseBlock>
-        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale1</button>
-        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale2</button>
-        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale3</button>
-        <button class="btn btn-dark me-2" type="button" id="button-addon2">Capitale4</button>
+        
+        <div class="row g-2 justify-content-center mt-5">
+            <div class="col-md-4">
+                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale1</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale2</button>
+            </div>
+        </div>
+        <div class="row g-2 justify-content-center">
+            <div class="col-md-4 mt-3">
+                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale3</button>
+            </div>
+            <div class="col-md-4 mt-3">
+                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale4</button>
+            </div>
+        </div>
     </ng-template>
 
-    <button class="btn btn-success me-2" type="button" id="button-addon2">Valider</button>
-    <button class="btn btn-danger me-2" type="button" id="button-addon2">Passer</button>
-    <div>Question {{currentQuestion.questionNb}} - {{nbOfQuestion}}</div>
-
+    <button class="btn btn-success me-2 mt-5" type="button" id="button-addon2">Valider</button>
+    <button class="btn btn-danger me-2 mt-5" type="button" id="button-addon2">Passer</button>
+    <div>Question {{questionNb}} - {{nbOfQuestion}}</div>
 
 </div>

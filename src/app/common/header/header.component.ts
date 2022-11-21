@@ -9,7 +9,7 @@ export class HeaderComponent implements OnInit {
 
   websiteName = "Quizz";
   imgSrc = '../../assets/img/earth-globe-with-continents-maps.png';
-  connected = true;
+  connected = false;
 
   constructor() { }
 

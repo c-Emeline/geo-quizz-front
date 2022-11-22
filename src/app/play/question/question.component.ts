@@ -3,15 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface AnswerOption{
-  answerId: number,
-  capital: string,
+  Id: number,
+  optionText: string,
 }
 
 export interface QuestionQCM{
-  id: string,
-  country: string,
-  answers: AnswerOption,
-  capital: string;
+  title: string,
+  code_country: string,
+  options: AnswerOption[],
+  optionCorrect: string;
   }
 
 @Component({
@@ -21,29 +21,88 @@ export interface QuestionQCM{
 })
 export class QuestionComponent implements OnInit {
 
-  flag = "Joli drapeau";
-  country = "Pays";
+  nbOfQuestion = 10;
+  questionNb = 1;
+  widthC = "50px";
+  percentage = (this.questionNb*100/this.nbOfQuestion).toString();
+
+  //quizz settings
   qcm = false;
-  nbOfQuestion = "10";
-  questionNb = "2";
-  answerOption : AnswerOption = { answerId: 0, capital: "Rome"}
+  //continent = null;
+  
+  goodAnswers = 0;
+  answerOption : AnswerOption[] = [
+    { Id: 1, optionText: "Rome"}, 
+    { Id: 2, optionText: "Paris"}, 
+    { Id: 3, optionText: "Londres"}, 
+    { Id: 4, optionText: "Prague"}];
+
   currentQuestion :QuestionQCM = {
-    id: "FRA",
-    country: "France",
-    answers : this.answerOption,
-    capital: "Paris"
+    title: "France",
+    code_country: "FRA",
+    options: this.answerOption,
+    optionCorrect: "Paris"
   }
 
   constructor(private http:HttpClient) {
-    const question:Observable<QuestionQCM> = this.http.get<QuestionQCM>('http://127.0.0.1:8080/question/');
-    question.subscribe(question => {
-      this.currentQuestion = question;
-      console.log(this.currentQuestion);
-    });
+
+    //instantiate Quizz
+    //this.changeQuestion();
 
   }
 
   ngOnInit(): void {
   }
+
+  skip(event: Event): void{
+    if (this.questionNb<this.nbOfQuestion){
+      this.changeQuestion();
+      console.log("skipped");
+    }
+    
+  }
+
+  validate(event: Event, chosenOption: String): void{
+    if (this.currentQuestion.optionCorrect== chosenOption){
+      //TODO turn button green
+      //TODO turn other buttons disabled
+      //TODO passer button animation
+      this.goodAnswers++;
+      if (this.questionNb<this.nbOfQuestion){
+        this.changeQuestion();
+      }
+    }
+
+
+  }
+
+  changeQuestion(): void{
+    let question =this.http.post<QuestionQCM>('http://127.0.0.1:8080/question/', this.questionNb);
+    question.subscribe(question => { 
+      this.currentQuestion = question; 
+      this.answerOption = question.options;
+      console.log(this.currentQuestion); 
+    });   
+
+    console.log("Question changed");
+
+    /*this.answerOption = [
+      { Id: 1, optionText: "Rome"}, 
+      { Id: 2, optionText: "Lima"}, 
+      { Id: 3, optionText: "Londres"}, 
+      { Id: 4, optionText: "Prague"}]
+    this.currentQuestion = {
+      title: "Pérou",
+      code_country: "PER",
+      options: this.answerOption,
+      optionCorrect: "Lima"
+    }*/
+    this.questionNb++;
+    
+  }
+
+
+
+  
 
 }

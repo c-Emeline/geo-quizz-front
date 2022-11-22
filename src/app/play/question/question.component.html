@@ -1,10 +1,10 @@
 <div class="container text-center">
     <img
-    src="https://countryflagsapi.com/svg/{{currentQuestion.id}}"
+    src="https://countryflagsapi.com/svg/{{currentQuestion.code_country}}"
     height="160"
-    alt="{{currentQuestion.country}}"
+    alt="{{currentQuestion.title}}"
     class="img mt-5">
-    <div class="align-items-center fs-1">{{currentQuestion.country}}</div>
+    <div class="align-items-center fs-1">{{currentQuestion.title}}</div>
 
     <div *ngIf="qcm; else elseBlock" >
         <input type="text" class="form-control" placeholder="Capitale de ce pays" aria-label="Capitale de ce pays" aria-describedby="button-addon2">
@@ -14,24 +14,27 @@
         
         <div class="row g-2 justify-content-center mt-5">
             <div class="col-md-4">
-                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale1</button>
+                <!-- [ngClass]="{'btn-success' : btn1True, 'btn-danger': !btn1True, btn1None} -->
+                <button (click)="validate($event, answerOption[0].optionText)" class="btn btn-lg btn-secondary w-100" type="button" id="button-addon1">{{answerOption[0].optionText}}</button>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale2</button>
+                <button (click)="validate($event, answerOption[1].optionText)" class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">{{answerOption[1].optionText}}</button>
             </div>
         </div>
         <div class="row g-2 justify-content-center">
             <div class="col-md-4 mt-3">
-                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale3</button>
+                <button (click)="validate($event, answerOption[2].optionText)" class="btn btn-lg btn-secondary w-100" type="button" id="button-addon3">{{answerOption[2].optionText}}</button>
             </div>
             <div class="col-md-4 mt-3">
-                <button class="btn btn-lg btn-secondary w-100" type="button" id="button-addon2">Capitale4</button>
+                <button (click)="validate($event, answerOption[3].optionText)" class="btn btn-lg btn-secondary w-100" type="button" id="button-addon4">{{answerOption[3].optionText}}</button>
             </div>
         </div>
     </ng-template>
 
     <button class="btn btn-success me-2 mt-5" type="button" id="button-addon2">Valider</button>
-    <button class="btn btn-danger me-2 mt-5" type="button" id="button-addon2">Passer</button>
-    <div>Question {{questionNb}} - {{nbOfQuestion}}</div>
+    <button (click)="skip($event)" class="btn btn-danger me-2 mt-5" type="button" id="button-addon2">Passer</button>
+    
+    <div class="mt-4">Question {{questionNb}} - {{nbOfQuestion}}</div>
+    <div class="mt-2">{{goodAnswers}} pts</div>
 
 </div>

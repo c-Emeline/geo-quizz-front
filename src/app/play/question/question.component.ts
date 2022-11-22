@@ -96,8 +96,7 @@ export class QuestionComponent implements OnInit {
 
 
   changeQuestion(): void{
-
-    let question =this.http.post<QuestionQCM>('http://127.0.0.1:4200/api/question/', this.questionNb);
+    let question =this.http.post<QuestionQCM>('http://localhost:4200/api/question/', this.questionNb);
     question.subscribe(question => { 
       this.currentQuestion = question; 
       this.answerOption = question.options;

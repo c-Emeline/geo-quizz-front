@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 export interface AnswerOption{
   Id: number,
@@ -22,12 +23,16 @@ export interface QuestionQCM{
 export class QuestionComponent implements OnInit {
 
   nbOfQuestion = 10;
-  questionNb = 1;
+  questionNb = 0;
   widthC = "50px";
   percentage = (this.questionNb*100/this.nbOfQuestion).toString();
 
+  //button
+  btnDisabled = false;
+  skipDisabled = false;
+
   //quizz settings
-  qcm = false;
+  qcm = true;
   //continent = null;
   
   goodAnswers = 0;
@@ -39,7 +44,7 @@ export class QuestionComponent implements OnInit {
 
   currentQuestion :QuestionQCM = {
     title: "France",
-    code_country: "FRA",
+    code_country: "FR",
     options: this.answerOption,
     optionCorrect: "Paris"
   }
@@ -47,7 +52,7 @@ export class QuestionComponent implements OnInit {
   constructor(private http:HttpClient) {
 
     //instantiate Quizz
-    //this.changeQuestion();
+    this.changeQuestion();
 
   }
 
@@ -63,25 +68,40 @@ export class QuestionComponent implements OnInit {
   }
 
   validate(event: Event, chosenOption: String): void{
+    this.btnDisabled=true;
+    this.skipDisabled=true;
+    let classToApply = '';
+
     if (this.currentQuestion.optionCorrect== chosenOption){
-      //TODO turn button green
-      //TODO turn other buttons disabled
-      //TODO passer button animation
       this.goodAnswers++;
-      if (this.questionNb<this.nbOfQuestion){
-        this.changeQuestion();
-      }
+      classToApply='bg-success';
     }
 
+    if (this.currentQuestion.optionCorrect!= chosenOption){
+      classToApply='bg-danger';
+    }
+
+    (event.target as HTMLInputElement).classList.add(classToApply);
+    
+    if (this.questionNb<this.nbOfQuestion){
+      //delay before next question
+      setTimeout(()=>{
+        this.changeQuestion();
+        (event.target as HTMLInputElement).classList.remove(classToApply);
+        this.skipDisabled=false;
+      }, 500);
+    }
 
   }
 
+
   changeQuestion(): void{
-    let question =this.http.post<QuestionQCM>('http://127.0.0.1:8080/question/', this.questionNb);
+
+    let question =this.http.post<QuestionQCM>('http://127.0.0.1:4200/api/question/', this.questionNb);
     question.subscribe(question => { 
       this.currentQuestion = question; 
       this.answerOption = question.options;
-      console.log(this.currentQuestion); 
+      console.log(this.currentQuestion);
     });   
 
     console.log("Question changed");
@@ -93,16 +113,15 @@ export class QuestionComponent implements OnInit {
       { Id: 4, optionText: "Prague"}]
     this.currentQuestion = {
       title: "Pérou",
-      code_country: "PER",
+      code_country: "PE",
       options: this.answerOption,
       optionCorrect: "Lima"
     }*/
     this.questionNb++;
+    this.btnDisabled=false;
+    this.skipDisabled=false;
     
   }
 
-
-
-  
 
 }
